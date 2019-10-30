@@ -26,7 +26,11 @@ const ArtboardContainer = posed.div({
 
 const ArtView = posed.div({
   moveUp: {
-    y: "-60vh"
+    y: "-60vh",
+    opacity: 1
+  },
+  invisible: {
+    opacity: 0
   }
 });
 
@@ -54,6 +58,9 @@ class App extends React.Component {
     this.handleNameChange = this.handleNameChange.bind(this);
   }
   componentDidMount() {
+    document.body.addEventListener("touchmove", e => e.preventDefault(), {
+      passive: false
+    });
     socket.on("connect", function() {
       console.log("This connection is made");
     });
@@ -63,6 +70,7 @@ class App extends React.Component {
   addDrawing(drawing) {
     var newDrawings = [drawing].concat(this.state.otherDrawings);
     this.setState({ otherDrawings: newDrawings });
+    document.body.removeEventListener("touchmove", e => e.preventDefault());
   }
 
   toColor(colorName) {
@@ -161,7 +169,7 @@ class App extends React.Component {
           </Button.Group>
         </ArtboardContainer>
 
-        <ArtView pose={this.state.canvasVisible ? "" : "moveUp"}>
+        <ArtView pose={this.state.canvasVisible ? "invisible" : "moveUp"}>
           <Tile kind="ancestor" className="drawings-container">
             {this.state.otherDrawings.map(x => (
               <Tile key={x.name} kind="child" size={3} className="drawing-tile">
