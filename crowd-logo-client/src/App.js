@@ -89,7 +89,7 @@ class App extends React.Component {
       <div className="App">
         <Navbar.Brand color="dark">
           <Navbar.Item position="centered">
-            <strong>CrowdLogo</strong> | Made for COGS 123
+            <strong>GroupDraw</strong> | Made for COGS 123
           </Navbar.Item>
         </Navbar.Brand>
         <Container>
