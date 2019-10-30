@@ -1,16 +1,40 @@
 import React from "react";
 import DrawableCanvas from "react-drawable-canvas";
+import posed from "react-pose";
 import "react-bulma-components/dist/react-bulma-components.min.css";
 import { Tile, Card, Navbar, Button, Container } from "react-bulma-components";
 import "./App.css";
 import io from "socket.io-client";
 
 const socket = io();
+const ArtboardContainer = posed.div({
+  enter: {
+    y: 0,
+    opacity: 1,
+    delay: 300,
+    transition: {
+      y: { type: "spring", stiffness: 1000, default: { duration: 300 } }
+    }
+  },
+  exit: {
+    y: "-50%",
+    opacity: 0,
+    display: "none",
+    transition: { duration: 150 }
+  }
+});
+
+const ArtView = posed.div({
+  moveUp: {
+    y: "-60vh"
+  }
+});
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      canvasVisible: true,
       canvasAttrs: {
         brushColor: "#000000",
         lineWidth: 4,
@@ -19,7 +43,7 @@ class App extends React.Component {
         },
         clear: false
       },
-      name: null,
+      name: "",
       otherDrawings: []
     };
 
@@ -79,6 +103,7 @@ class App extends React.Component {
       img: img
     };
     socket.emit("drawing", userDrawing);
+    this.setState({ canvasVisible: false });
   }
 
   handleNameChange(e) {
@@ -92,56 +117,64 @@ class App extends React.Component {
             <strong>GroupDraw</strong> | Made for COGS 123
           </Navbar.Item>
         </Navbar.Brand>
-        <Container>
+        <ArtboardContainer
+          pose={this.state.canvasVisible ? "enter" : "exit"}
+          id="main-canvas"
+        >
+          <Container>
+            <Button.Group position="centered">
+              <Button color="danger" onClick={() => this.toColor("red")}>
+                Red
+              </Button>
+              <Button color="info" onClick={() => this.toColor("blue")}>
+                Blue
+              </Button>
+              <Button color="primary" onClick={() => this.toColor("green")}>
+                Green
+              </Button>
+              <Button color="dark" onClick={this.toColor}>
+                Black
+              </Button>
+            </Button.Group>
+          </Container>
+          <Container className="canvas-container">
+            <DrawableCanvas {...this.state.canvasAttrs}></DrawableCanvas>
+          </Container>
+
+          <Container>
+            <div className="columns is-centered">
+              <div className="column is-one-quarter has-text-centered">
+                <input
+                  className="input is-medium name-field"
+                  placeholder="Your name"
+                  value={this.state.name}
+                  onChange={this.handleNameChange}
+                ></input>
+              </div>
+            </div>
+          </Container>
           <Button.Group position="centered">
-            <Button color="danger" onClick={() => this.toColor("red")}>
-              Red
-            </Button>
-            <Button color="info" onClick={() => this.toColor("blue")}>
-              Blue
-            </Button>
-            <Button color="primary" onClick={() => this.toColor("green")}>
-              Green
-            </Button>
-            <Button color="dark" onClick={this.toColor}>
-              Black
+            <Button onClick={this.clearCanvas}>Clear</Button>
+            <Button color="dark" onClick={this.submitDrawing}>
+              Submit
             </Button>
           </Button.Group>
-        </Container>
-        <Container className="canvas-container">
-          <DrawableCanvas {...this.state.canvasAttrs}></DrawableCanvas>
-        </Container>
+        </ArtboardContainer>
 
-        <Container>
-          <div className="columns is-centered">
-            <div className="column is-one-quarter has-text-centered">
-              <input
-                className="input is-medium name-field"
-                placeholder="Your name"
-                value={this.state.name}
-                onChange={this.handleNameChange}
-              ></input>
-            </div>
-          </div>
-        </Container>
-        <Button.Group position="centered">
-          <Button onClick={this.clearCanvas}>Clear</Button>
-          <Button color="dark" onClick={this.submitDrawing}>
-            Submit
-          </Button>
-        </Button.Group>
-        <Tile kind="ancestor" className="drawings-container">
-          {this.state.otherDrawings.map(x => (
-            <Tile kind="child" size={3} className="drawing-tile">
-              <Card>
-                <Card.Image size="1by1" src={x.img}></Card.Image>
-                <Card.Content>
-                  A work of art by <strong>{x.name}</strong>
-                </Card.Content>
-              </Card>
-            </Tile>
-          ))}
-        </Tile>
+        <ArtView pose={this.state.canvasVisible ? "" : "moveUp"}>
+          <Tile kind="ancestor" className="drawings-container">
+            {this.state.otherDrawings.map(x => (
+              <Tile key={x.name} kind="child" size={3} className="drawing-tile">
+                <Card>
+                  <Card.Image size="1by1" src={x.img}></Card.Image>
+                  <Card.Content>
+                    A work of art by <strong>{x.name}</strong>
+                  </Card.Content>
+                </Card>
+              </Tile>
+            ))}
+          </Tile>
+        </ArtView>
       </div>
     );
   }
