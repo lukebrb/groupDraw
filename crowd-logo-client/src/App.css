@@ -1,5 +1,6 @@
 html {
-  background-color: #acd6bf;
+  background-color: rgb(245, 241, 234);
+  overflow-x: hidden;
 }
 
 .App {
@@ -31,6 +32,7 @@ html {
   height: 300px;
   margin-top: 20px;
   margin-bottom: 20px;
+  touch-action: none;
 }
 
 .name-field {

@@ -37,7 +37,7 @@ class App extends React.Component {
   }
 
   addDrawing(drawing) {
-    var newDrawing = this.state.otherDrawings.concat(drawing);
+    var newDrawing = this.state.otherDrawings.unshift(drawing);
     this.setState({ otherDrawings: newDrawing });
   }
 
@@ -46,15 +46,15 @@ class App extends React.Component {
 
     switch (colorName) {
       case "red":
-        newState.canvasAttrs.brushColor = "#FF0000";
+        newState.canvasAttrs.brushColor = "#FF3860";
         break;
 
       case "blue":
-        newState.canvasAttrs.brushColor = "#0000FF";
+        newState.canvasAttrs.brushColor = "#209CEE";
         break;
 
       case "green":
-        newState.canvasAttrs.brushColor = "#00FF00";
+        newState.canvasAttrs.brushColor = "#00D1B2";
         break;
 
       default:
@@ -87,8 +87,8 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Navbar.Brand position="centered">
-          <Navbar.Item>
+        <Navbar.Brand color="dark">
+          <Navbar.Item position="centered">
             <strong>CrowdLogo</strong> | Made for COGS 123
           </Navbar.Item>
         </Navbar.Brand>
