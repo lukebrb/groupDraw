@@ -1,7 +1,9 @@
 html {
   background-color: rgb(245, 241, 234);
 }
-
+body {
+  overflow: hidden;
+}
 .canvas-container {
   width: 300px;
   height: 300px;
