@@ -70,7 +70,6 @@ class App extends React.Component {
   addDrawing(drawing) {
     var newDrawings = [drawing].concat(this.state.otherDrawings);
     this.setState({ otherDrawings: newDrawings });
-    document.body.removeEventListener("touchmove", e => e.preventDefault());
   }
 
   toColor(colorName) {
@@ -112,6 +111,7 @@ class App extends React.Component {
     };
     socket.emit("drawing", userDrawing);
     this.setState({ canvasVisible: false });
+    document.body.removeEventListener("touchmove", e => e.preventDefault());
   }
 
   handleNameChange(e) {
