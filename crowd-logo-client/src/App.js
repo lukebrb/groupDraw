@@ -37,8 +37,8 @@ class App extends React.Component {
   }
 
   addDrawing(drawing) {
-    var newDrawing = this.state.otherDrawings.unshift(drawing);
-    this.setState({ otherDrawings: newDrawing });
+    var newDrawings = [drawing].concat(this.state.otherDrawings);
+    this.setState({ otherDrawings: newDrawings });
   }
 
   toColor(colorName) {
