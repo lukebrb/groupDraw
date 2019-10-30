@@ -1,6 +1,5 @@
 html {
   background-color: rgb(245, 241, 234);
-  overflow-x: hidden;
 }
 
 .App {
@@ -27,7 +26,6 @@ html {
 }
 
 .canvas-container {
-  border: dotted red 1px;
   width: 300px;
   height: 300px;
   margin-top: 20px;
