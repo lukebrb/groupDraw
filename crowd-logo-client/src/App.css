@@ -33,6 +33,7 @@ html {
   margin-top: 20px;
   margin-bottom: 20px;
   touch-action: none;
+  -webkit-user-select: none;
 }
 
 .name-field {
