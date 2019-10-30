@@ -5,7 +5,7 @@ import { Tile, Card, Navbar, Button, Container } from "react-bulma-components";
 import "./App.css";
 import io from "socket.io-client";
 
-const socket = io("http://localhost:5000");
+const socket = io();
 
 class App extends React.Component {
   constructor(props) {
