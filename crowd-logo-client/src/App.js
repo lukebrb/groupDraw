@@ -34,6 +34,10 @@ const ArtView = posed.div({
   }
 });
 
+function preventDefault(e) {
+  e.preventDefault();
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -58,7 +62,7 @@ class App extends React.Component {
     this.handleNameChange = this.handleNameChange.bind(this);
   }
   componentDidMount() {
-    document.body.addEventListener("touchmove", e => e.preventDefault(), {
+    document.body.addEventListener("touchmove", preventDefault, {
       passive: false
     });
     socket.on("connect", function() {
@@ -111,7 +115,7 @@ class App extends React.Component {
     };
     socket.emit("drawing", userDrawing);
     this.setState({ canvasVisible: false });
-    document.body.removeEventListener("touchmove", e => e.preventDefault());
+    document.body.removeEventListener("touchmove", preventDefault);
   }
 
   handleNameChange(e) {
